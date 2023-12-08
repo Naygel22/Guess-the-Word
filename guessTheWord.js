@@ -4,10 +4,12 @@ const lettersTyped = document.querySelector('.lettersTyped');
 const inputBar = document.querySelector('.inputBar');
 const guessButton = document.querySelector('.guessButton');
 const guessText = document.querySelector('.guessText');
+const guessesRemaining = document.querySelector('.guessesRemaining');
 
 let randomWordFromArray; 
 let currentInputValue;
 let guessTextWithLetter;
+let count = 10;
 
 startApp();
 
@@ -16,6 +18,7 @@ function startApp(){
   for(let i = 0; i < randomWordFromArray.length; i++){
     createCircle();
   }
+  createTextwithGuessesCount()
 }
 
 function randomWord(){
@@ -66,14 +69,20 @@ function replaceCirclesWithLetters() {
   }
 
   if (correctGuess) {
-    guessTextWithLetter.innerHTML = `Good Guess! The word has a letter ${currentInputValue}.`;
+    guessTextWithLetter.textContent = `Good Guess! The word has a letter ${currentInputValue}.`;
     guessTextWithLetter.classList.remove('hidden');
   } else {
-    guessTextWithLetter.innerHTML = `Try again! The word doesn't have a letter ${currentInputValue}.`;
+    guessTextWithLetter.textContent = `Try again! The word doesn't have a letter ${currentInputValue}.`;
     guessTextWithLetter.classList.remove('hidden');
   }
 }
-
+function createTextwithGuessesCount(){
+  const guessesRemainingText = document.createElement('p');
+  guessesRemainingText.classList.add('guessesRemainingText');
+  guessesRemaining.appendChild(guessesRemainingText);
+  guessesRemainingText.textContent = `You have ${count} guesses remaining.`;
+  
+}
 
 
 
