@@ -65,4 +65,18 @@ body{
 .hidden {
   display: none;
 }
+.correctWordText {
+  margin: 30px;
+}
+.playAgainButton {
+  width: 130px;
+  height: 45px;
+  background-color: #3ebfb7;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
 

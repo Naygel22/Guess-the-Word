@@ -5,11 +5,12 @@ const inputBar = document.querySelector('.inputBar');
 const guessButton = document.querySelector('.guessButton');
 const guessText = document.querySelector('.guessText');
 const guessesRemaining = document.querySelector('.guessesRemaining');
+const correctWordText = document.querySelector('.correctWordText');
 
 let randomWordFromArray; 
 let currentInputValue;
 let guessTextWithLetter;
-let count = 10;
+let count = 15;
 
 startApp();
 
@@ -76,15 +77,40 @@ function replaceCirclesWithLetters() {
     guessTextWithLetter.classList.remove('hidden');
   }
 }
+
+
 function createTextwithGuessesCount(){
   const guessesRemainingText = document.createElement('p');
   guessesRemainingText.classList.add('guessesRemainingText');
   guessesRemaining.appendChild(guessesRemainingText);
-  guessesRemainingText.textContent = `You have ${count} guesses remaining.`;
-  
+  updateTextWithGuessesCount()
 }
 
+function updateTextWithGuessesCount() {
+  const guessesRemainingText = document.querySelector('.guessesRemainingText');
+  guessesRemainingText.textContent = `You have ${count} guesses remaining.`;
 
+  if(count === 0){
+    showEndElements();
+
+  }
+}
+  const playAgainButton = document.querySelector('.playAgainButton');
+  playAgainButton.classList.add('hidden');
+
+  const correctWordTextParagraph = document.createElement('p');
+  correctWordTextParagraph.classList.add('correctWordTextParagraph', 'hidden');
+  correctWordText.appendChild(correctWordTextParagraph);
+
+function showEndElements() {
+  playAgainButton.classList.remove('hidden');
+  correctWordTextParagraph.textContent = `The correct word was ${randomWordFromArray}`;
+  correctWordTextParagraph.classList.remove('hidden');
+  playAgainButton.addEventListener('click', () => {
+  startApp();
+  
+  })
+}
 
 
 
@@ -92,7 +118,8 @@ guessButton.addEventListener('click', () => {
   currentInputValue = inputBar.value;
   showInputLetters();
   replaceCirclesWithLetters();
-  
+  count--;
+  updateTextWithGuessesCount()
   
 })
 
