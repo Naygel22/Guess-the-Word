@@ -6,15 +6,18 @@ const guessButton = document.querySelector('.guessButton');
 const guessText = document.querySelector('.guessText');
 const guessesRemaining = document.querySelector('.guessesRemaining');
 const correctWordText = document.querySelector('.correctWordText');
+const playAgainButton = document.querySelector('.playAgainButton');
 
 let randomWordFromArray; 
 let currentInputValue;
 let guessTextWithLetter;
-let count = 15;
+let count;
 
 startApp();
 
 function startApp(){
+  count = 15;
+  playAgainButton.classList.add('hidden');
   randomWordFromArray = randomWord();
   for(let i = 0; i < randomWordFromArray.length; i++){
     createCircle();
@@ -28,14 +31,11 @@ function randomWord(){
   return wordsArray[randomIndex];
 }
 
-
-
 function createCircle(){
   const circle = document.createElement('div');
   circle.classList.add('circle');
   hiddenLetters.appendChild(circle);
 }
-
 
 function showInputLetters(){
   const oneLetterTyped = document.createElement('p');
@@ -78,7 +78,6 @@ function replaceCirclesWithLetters() {
   }
 }
 
-
 function createTextwithGuessesCount(){
   const guessesRemainingText = document.createElement('p');
   guessesRemainingText.classList.add('guessesRemainingText');
@@ -90,28 +89,30 @@ function updateTextWithGuessesCount() {
   const guessesRemainingText = document.querySelector('.guessesRemainingText');
   guessesRemainingText.textContent = `You have ${count} guesses remaining.`;
 
-  if(count === 0){
+  if(count <= 0){
     showEndElements();
-
   }
 }
-  const playAgainButton = document.querySelector('.playAgainButton');
-  playAgainButton.classList.add('hidden');
-
-  const correctWordTextParagraph = document.createElement('p');
-  correctWordTextParagraph.classList.add('correctWordTextParagraph', 'hidden');
-  correctWordText.appendChild(correctWordTextParagraph);
 
 function showEndElements() {
   playAgainButton.classList.remove('hidden');
-  correctWordTextParagraph.textContent = `The correct word was ${randomWordFromArray}`;
-  correctWordTextParagraph.classList.remove('hidden');
-  playAgainButton.addEventListener('click', () => {
-  startApp();
+  correctWordText.textContent = `The correct word was ${randomWordFromArray}`;
+  correctWordText.classList.remove('hidden');
+  lettersTyped.textContent = '';
+  lettersTyped.classList.add('hidden'); 
   
-  })
+  playAgainButton.addEventListener('click', () => {
+    correctWordText.textContent = '';
+    playAgainButton.classList.add('hidden');
+    while (hiddenLetters.firstChild) {
+      hiddenLetters.removeChild(hiddenLetters.firstChild);
+    }
+    lettersTyped.textContent = '';
+    lettersTyped.classList.remove('hidden');
+    guessTextWithLetter.classList.add('hidden');
+    startApp();
+  });
 }
-
 
 
 guessButton.addEventListener('click', () => {
@@ -120,8 +121,4 @@ guessButton.addEventListener('click', () => {
   replaceCirclesWithLetters();
   count--;
   updateTextWithGuessesCount()
-  
-})
-
-
-
+});
