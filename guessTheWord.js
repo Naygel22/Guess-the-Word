@@ -7,6 +7,8 @@ const guessText = document.querySelector('.guessText');
 const guessesRemaining = document.querySelector('.guessesRemaining');
 const correctWordText = document.querySelector('.correctWordText');
 const playAgainButton = document.querySelector('.playAgainButton');
+const typeLettersText = document.querySelector('.typeLettersText');
+
 
 let randomWordFromArray; 
 let currentInputValue;
@@ -72,6 +74,11 @@ function replaceCirclesWithLetters() {
   if (correctGuess) {
     guessTextWithLetter.textContent = `Good Guess! The word has a letter ${currentInputValue}.`;
     guessTextWithLetter.classList.remove('hidden');
+
+    const circlesLeft = document.querySelectorAll('.circle');
+    if(circlesLeft.length === 0) {
+      showEndElements();
+    }
   } else {
     guessTextWithLetter.textContent = `Try again! The word doesn't have a letter ${currentInputValue}.`;
     guessTextWithLetter.classList.remove('hidden');
@@ -99,26 +106,49 @@ function showEndElements() {
   correctWordText.textContent = `The correct word was ${randomWordFromArray}`;
   correctWordText.classList.remove('hidden');
   lettersTyped.textContent = '';
-  lettersTyped.classList.add('hidden'); 
+   guessButton.classList.add('hidden');
+   inputBar.classList.add('hidden');
+   guessText.classList.add('hidden');
+   guessesRemaining.classList.add('hidden');
+   typeLettersText.classList.add('hidden');
+   
   
   playAgainButton.addEventListener('click', () => {
     correctWordText.textContent = '';
     playAgainButton.classList.add('hidden');
+    guessButton.classList.remove('hidden');
+   inputBar.classList.remove('hidden');
+   guessText.classList.remove('hidden');
+   guessesRemaining.classList.remove('hidden');
+   typeLettersText.classList.remove('hidden');
     while (hiddenLetters.firstChild) {
       hiddenLetters.removeChild(hiddenLetters.firstChild);
     }
     lettersTyped.textContent = '';
-    lettersTyped.classList.remove('hidden');
     guessTextWithLetter.classList.add('hidden');
     startApp();
   });
 }
-
-
-guessButton.addEventListener('click', () => {
-  currentInputValue = inputBar.value;
+function onGuess() {
+  const userGuess = inputBar.value;
+  if (userGuess !== '') {
+    currentInputValue = userGuess;
   showInputLetters();
   replaceCirclesWithLetters();
   count--;
   updateTextWithGuessesCount()
+  }
+}
+
+guessButton.addEventListener('click', () => {
+  onGuess();
 });
+
+document.addEventListener("keydown", function(event) {
+  if(event.key === 'Enter') {
+    onGuess();
+  }
+})
+inputBar.addEventListener('input', (event) => {
+  event.target.value = event.target.value.toUpperCase().replace(' ', '');
+})
